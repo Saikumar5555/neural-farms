@@ -1,0 +1,13 @@
+train: D:\inttelliod projectts\final medadviser\Pest-types-12\train\images
+val: D:\inttelliod projectts\final medadviser\Pest-types-12\valid\images
+test: D:\inttelliod projectts\final medadviser\Pest-types-12\test\images
+
+nc: 1
+names: ['Aphids']
+
+roboflow:
+  workspace: hydroponics-cuihh
+  project: pest-types
+  version: 12
+  license: CC BY 4.0
+  url: https://universe.roboflow.com/hydroponics-cuihh/pest-types/dataset/12
