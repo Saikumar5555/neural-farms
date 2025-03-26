@@ -1,0 +1,16 @@
+names:
+- green-leafhopper
+- leaf-folder
+- rice-bug
+- stem-borer
+- whorl-maggot
+nc: 5
+roboflow:
+  license: CC BY 4.0
+  project: bugsai
+  url: https://universe.roboflow.com/skindisease-tvdgb/bugsai/dataset/1
+  version: 1
+  workspace: skindisease-tvdgb
+test: C:\Saikumar\Neural farms\neural-farms\BugsAi-1\test\images
+train: C:\Saikumar\Neural farms\neural-farms\BugsAi-1\train\images
+val: C:\Saikumar\Neural farms\neural-farms\BugsAi-1\valid\images

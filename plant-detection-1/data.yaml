@@ -1,0 +1,21 @@
+names:
+- Cabbage
+- Corn
+- Lettuce
+- Padi
+- Purecorn-Discoloredcorn
+- Tomato
+- Wheathead
+- damaged corn
+- discolored corn
+- purecorn
+nc: 10
+roboflow:
+  license: CC BY 4.0
+  project: plant-detection-em72z
+  url: https://universe.roboflow.com/mama-veaxb/plant-detection-em72z/dataset/1
+  version: 1
+  workspace: mama-veaxb
+test: C:\Saikumar\Neural farms\neural-farms\plant-detection-1\test\images
+train: C:\Saikumar\Neural farms\neural-farms\plant-detection-1\train\images
+val: C:\Saikumar\Neural farms\neural-farms\plant-detection-1\valid\images

@@ -6,7 +6,7 @@ from transformers.utils import is_flash_attn_2_available
 from transformers import BitsAndBytesConfig
 
 # Log in to Hugging Face with your token
-token = "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"  # Replace with your actual token
+token = "HF_TOKEN"  # Replace with your actual token
 login(token=token)
 
 # Load the model and tokenizer for image analysis

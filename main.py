@@ -131,3 +131,130 @@ def predict():
 if __name__ == '__main__':
     # Make Flask app accessible on the local network
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+
+
+# from fastapi import FastAPI, UploadFile, HTTPException
+# from pydantic import BaseModel
+# from roboflow import Roboflow
+# from ultralytics import YOLO
+# from transformers import AutoModelForCausalLM, AutoTokenizer
+# from PIL import Image
+# import torch
+# import os
+# from typing import List
+
+# app = FastAPI()
+
+# # Paths and Configurations
+# API_KEY = "xQfSHHbVWsh0GQ4c6EHP"  # Replace with your Roboflow API key
+# MODEL_PATH = r"C:\Saikumar\Neural farms\neural-farms\yolo11n.pt"
+# HF_TOKEN = "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"  # Replace with your Hugging Face token
+# MODEL_ID = "vikhyatk/moondream2"  # Hugging Face image model
+# TEXT_MODEL_ID = "google/gemma-2b-it"  # Hugging Face text model
+
+# # Initialize Models
+# try:
+#     yolo_model = YOLO(MODEL_PATH)
+# except Exception as e:
+#     raise RuntimeError(f"Error loading YOLO model: {str(e)}")
+
+# @app.post("/train")
+# async def train_model(data_path: str, epochs: int = 100, imgsz: int = 640):
+#     """
+#     Train the YOLO model.
+#     """
+#     try:
+#         # Train YOLO model
+#         results = yolo_model.train(data=data_path, epochs=epochs, imgsz=imgsz, save=True)
+#         return {"message": "Training completed", "details": results}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Training error: {str(e)}")
+
+# @app.post("/predict")
+# async def predict_image(file: UploadFile):
+#     """
+#     Predict pests in an uploaded image.
+#     """
+#     try:
+#         # Save uploaded file
+#         file_path = f"temp/{file.filename}"
+#         os.makedirs("temp", exist_ok=True)
+#         with open(file_path, "wb") as buffer:
+#             buffer.write(file.file.read())
+
+#         # Perform prediction
+#         results = yolo_model.predict(file_path, save=True)
+#         predictions = []
+#         for r in results:
+#             for box in r.boxes:
+#                 class_id = int(box.cls)
+#                 object_name = r.names[class_id]
+#                 predictions.append({"class_id": class_id, "object_name": object_name})
+
+#         return {"message": "Prediction completed", "predictions": predictions}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
+
+# @app.post("/analyze")
+# async def analyze_image(file: UploadFile, symptoms: str):
+#     """
+#     Analyze image irregularities and generate pest diagnosis.
+#     """
+#     try:
+#         # Save uploaded file
+#         file_path = f"temp/{file.filename}"
+#         os.makedirs("temp", exist_ok=True)
+#         with open(file_path, "wb") as buffer:
+#             buffer.write(file.file.read())
+
+#         # Load the image
+#         image = Image.open(file_path)
+
+#         # Load Hugging Face model
+#         hf_model = AutoModelForCausalLM.from_pretrained(MODEL_ID, trust_remote_code=True)
+#         hf_tokenizer = AutoTokenizer.from_pretrained(MODEL_ID)
+
+#         # Encode image
+#         if hasattr(hf_model, "encode_image"):
+#             enc_image = hf_model.encode_image(image)
+#         else:
+#             raise HTTPException(status_code=500, detail="Model does not support image encoding")
+
+#         # Generate diagnosis prompt
+#         prompt = f"Describe the irregularity in the image such as color, shape, size, and what it may be. Symptoms: {symptoms}"
+
+#         # Generate response
+#         if hasattr(hf_model, "answer_question"):
+#             ans = hf_model.answer_question(enc_image, prompt, hf_tokenizer)
+#             return {"message": "Analysis completed", "answer": ans}
+#         else:
+#             raise HTTPException(status_code=500, detail="Model does not support answering questions")
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Analysis error: {str(e)}")
+
+# @app.post("/diagnose")
+# async def diagnose_pests(symptoms: str):
+#     """
+#     Generate pest diagnosis and remedies based on symptoms.
+#     """
+#     try:
+#         # Load text model
+#         text_model = AutoModelForCausalLM.from_pretrained(TEXT_MODEL_ID)
+#         tokenizer = AutoTokenizer.from_pretrained(TEXT_MODEL_ID)
+
+#         # Generate response
+#         prompt = (
+#             f"You are a farmer with extensive knowledge of crops, pests, and plant care. "
+#             f"Patient Symptoms: {symptoms}. What is the pest, its symptoms, causes, and remedies?"
+#         )
+#         input_ids = tokenizer(prompt, return_tensors="pt").to("cuda" if torch.cuda.is_available() else "cpu")
+#         outputs = text_model.generate(**input_ids, max_new_tokens=1024)
+#         decoded_output = tokenizer.decode(outputs[0])
+
+#         return {"message": "Diagnosis completed", "response": decoded_output}
+#     except Exception as e:
+#         raise HTTPException(status_code=500, detail=f"Diagnosis error: {str(e)}")
+
+# Run FastAPI with uvicorn
+# Use the following command to run: uvicorn filename:app --reload
